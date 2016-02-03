@@ -78,6 +78,13 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
+    <ClCompile Include="CSVparser.cpp" />
+    <ClCompile Include="main.cpp" />
+    <ClCompile Include="readData.cpp" />
+  </ItemGroup>
+  <ItemGroup>
+    <ClInclude Include="CSVparser.hpp" />
+    <ClInclude Include="Head.h" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">
