@@ -19,7 +19,7 @@ using namespace std;
 typedef struct paperinfo
 {
 	string title = "";
-	string abstract = "";
+	string abstra = "";
 	string originalKeywords = "";
 	string citeReference = "";
 	string citeMeAs = "";
