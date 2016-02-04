@@ -7,14 +7,12 @@
 
 #include "Head.h"
 
-
 int main(){
 
 	//Step1: 读取CSV文件，把每一条引文记录load到内存
 	readCSV();
-
-
-
+	//Step2: 分词、去无效词
+	doc2Word();
 
 	return 0;
 }

@@ -24,6 +24,9 @@
     <ClCompile Include="CSVparser.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
+    <ClCompile Include="doc2Word.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Head.h">

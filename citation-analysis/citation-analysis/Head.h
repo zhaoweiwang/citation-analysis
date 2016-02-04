@@ -6,9 +6,11 @@
 **************************************************/
 
 #include "iostream"
+#include "fstream"
 #include "string"
 #include "vector"
-#include "map"
+#include <algorithm>
+#include "unordered_map"
 
 #include "CSVparser.hpp"
 
@@ -25,6 +27,7 @@ typedef struct paperinfo
 	string citeMeAs = "";
 
 	vector<string> keywords;
+	unordered_map<string, int> wordVec;		//未去冗余、哈希词频
 
 }paperInfo;
 
@@ -36,3 +39,12 @@ typedef struct paperinfo
 返回：	无
 */
 void readCSV();
+
+
+/*
+函数名：	doc2Word
+功能：	分词
+输入：	无
+返回：	无
+*/
+void doc2Word();
