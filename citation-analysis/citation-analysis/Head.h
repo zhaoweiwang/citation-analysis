@@ -11,8 +11,10 @@
 #include "vector"
 #include <algorithm>
 #include "unordered_map"
+#include "map"
 
 #include "CSVparser.hpp"
+#include "english_stem.h"
 
 using namespace std;
 

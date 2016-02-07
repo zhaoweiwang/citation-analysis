@@ -67,7 +67,7 @@
       <Optimization>MaxSpeed</Optimization>
       <FunctionLevelLinking>true</FunctionLevelLinking>
       <IntrinsicFunctions>true</IntrinsicFunctions>
-      <PreprocessorDefinitions>WIN32;NDEBUG;_CONSOLE;_LIB;%(PreprocessorDefinitions)</PreprocessorDefinitions>
+      <PreprocessorDefinitions>WIN32;NDEBUG;_CONSOLE;_LIB;_CRT_SECURE_NO_WARNINGS;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <SDLCheck>true</SDLCheck>
       <AdditionalIncludeDirectories>D:\Software\vs2013\boost_1_55_0;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
     </ClCompile>
@@ -86,8 +86,15 @@
     <ClCompile Include="readData.cpp" />
   </ItemGroup>
   <ItemGroup>
+    <ClInclude Include="common_lang_constants.h" />
     <ClInclude Include="CSVparser.hpp" />
+    <ClInclude Include="english_stem.h" />
     <ClInclude Include="Head.h" />
+    <ClInclude Include="meta.h" />
+    <ClInclude Include="punctuation.h" />
+    <ClInclude Include="stemming.h" />
+    <ClInclude Include="string_util.h" />
+    <ClInclude Include="utilities.h" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">

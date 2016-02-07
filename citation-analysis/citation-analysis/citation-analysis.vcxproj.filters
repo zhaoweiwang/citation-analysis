@@ -35,5 +35,26 @@
     <ClInclude Include="CSVparser.hpp">
       <Filter>Header Files</Filter>
     </ClInclude>
+    <ClInclude Include="english_stem.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="stemming.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="common_lang_constants.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="punctuation.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="string_util.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="utilities.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="meta.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
   </ItemGroup>
 </Project>
