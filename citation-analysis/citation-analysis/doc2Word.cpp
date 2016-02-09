@@ -6,6 +6,10 @@ vector<string> stopWords;				//停用词集合
 
 unordered_map<string, int> stemCount;	//stem的文档数
 
+inline bool compTFIDF(const stemInfo &a, const stemInfo &b){
+	return a.tf_idf > b.tf_idf;
+}
+
 string str2Lower(string str)
 {
 	transform(str.begin(), str.end(), str.begin(), ::tolower);
@@ -74,6 +78,25 @@ void stemmingFunc(){
 		//	cout << iter->first << ":" << iter->second << endl;
 		//getchar();
 	}
+
+	cout << "总共：" << stemCount.size() << "维." << endl;
+	getchar();
+
+	for (int i = 0; i < paperVec.size(); ++i){
+		for (int j = 0; j < paperVec[i].stemVec.size(); ++j){
+			paperVec[i].stemVec[j].idf = 1.0 / log(((double)paperVec.size() / (double)(stemCount[paperVec[i].stemVec[j].term])));
+			paperVec[i].stemVec[j].tf_idf = paperVec[i].stemVec[j].tf * paperVec[i].stemVec[j].idf;
+		}
+
+		sort(paperVec[i].stemVec.begin(), paperVec[i].stemVec.end(), compTFIDF);
+
+		for (int j = 0; j < paperVec[i].stemVec.size(); ++j){
+			cout << paperVec[i].stemVec[j].term << ":" << paperVec[i].stemVec[j].tf_idf << endl;
+		}
+		getchar();
+	}
+
+
 }
 
 void doc2Word(){
