@@ -20,8 +20,17 @@ using namespace std;
 
 
 //自定义变量区
-typedef struct paperinfo
-{
+typedef struct steminfo{
+
+	string term = "";
+	double tf  = 0.0;
+	double idf = 0.0;
+	double tf_idf = 0.0;
+
+}stemInfo;
+
+typedef struct paperinfo{
+
 	string title = "";
 	string abstra = "";
 	string originalKeywords = "";
@@ -30,6 +39,8 @@ typedef struct paperinfo
 
 	vector<string> keywords;
 	unordered_map<string, int> wordVec;		//未去冗余、哈希词频
+
+	vector<stemInfo> stemVec;
 
 }paperInfo;
 

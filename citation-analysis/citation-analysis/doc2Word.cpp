@@ -4,6 +4,8 @@
 extern vector<paperInfo> paperVec;
 vector<string> stopWords;				//停用词集合
 
+unordered_map<string, int> stemCount;	//stem的文档数
+
 string str2Lower(string str)
 {
 	transform(str.begin(), str.end(), str.begin(), ::tolower);
@@ -25,8 +27,8 @@ void loadStopWords()
 
 void stemmingFunc(){
 	for (int i = 0; i < paperVec.size(); ++i){
-		cout << paperVec[i].abstra << endl << endl;
-		cout << "提取词条." << endl << endl;
+		//cout << paperVec[i].abstra << endl << endl;
+		//cout << "提取词条." << endl << endl;
 		boost::tokenizer<> tok(paperVec[i].abstra);
 		double countWord = 0.0;
 		for (boost::tokenizer<>::iterator beg = tok.begin(); beg != tok.end(); ++beg){
@@ -46,18 +48,25 @@ void stemmingFunc(){
 		}
 		
 		
-		cout << "词条小写化、去冗余处理." << endl << endl;
-		cout << "进行词干还原." << endl << endl;
-		getchar();
+		//cout << "词条小写化、去冗余处理." << endl << endl;
+		//cout << "进行词干还原." << endl << endl;
+		//getchar();
 
 		multimap<double, string> sortMap;
 		for (unordered_map<string, int>::iterator it = paperVec[i].wordVec.begin(); it != paperVec[i].wordVec.end(); ++it){
+			stemInfo stemTemp;
 			double tempTf = ((double)(it->second)) / countWord;
+			stemTemp.tf = tempTf;
+			stemTemp.term = it->first;
 			sortMap.insert(make_pair(tempTf, it->first));
+			stemCount[it->first]++;
+			paperVec[i].stemVec.push_back(stemTemp);
 		}
 		
+
 		for (multimap<double, string>::iterator it = sortMap.begin(); it != sortMap.end(); ++it)
 			cout << it->second << ":" << it->first << endl;
+		cout << "总共：" << sortMap.size() << " 个词." << endl;
 		getchar();
 
 		//unordered_map<string, int>::iterator iter;
