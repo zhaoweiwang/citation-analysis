@@ -27,6 +27,12 @@
     <ClCompile Include="doc2Word.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
+    <ClCompile Include="calCite.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="outputResult.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Head.h">

@@ -12,6 +12,7 @@
 #include <algorithm>
 #include "unordered_map"
 #include "map"
+#include "set"
 
 #include "CSVparser.hpp"
 #include "english_stem.h"
@@ -42,6 +43,12 @@ typedef struct paperinfo{
 
 	vector<stemInfo> stemVec;
 
+	set<string> reference;
+	vector<int> citeRidx;
+
+	int scan = 0;
+	bool citeFlag = false;
+
 }paperInfo;
 
 
@@ -52,6 +59,22 @@ typedef struct paperinfo{
 返回：	无
 */
 void readCSV();
+
+/*
+函数名：	calCite
+功能：	计算引用与被引用情况
+输入：	无
+返回：	无
+*/
+void calCite();
+
+/*
+函数名：	outputResult
+功能：	输出无权重结果
+输入：	无
+返回：	无
+*/
+void outputResult();
 
 
 /*
