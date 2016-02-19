@@ -33,6 +33,9 @@
     <ClCompile Include="outputResult.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
+    <ClCompile Include="getMat.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Head.h">

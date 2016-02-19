@@ -13,7 +13,9 @@ int main(){
 	readCSV();
 	//Step2: 计算引用与被引情况
 	calCite();
-	//Step3: 输出无权重统计结果
+	//Step3: getMat；
+	getMat();
+	//Step4 输出无权重统计结果
 	outputResult();
 	//Step4: 分词、去无效词
 	//doc2Word();

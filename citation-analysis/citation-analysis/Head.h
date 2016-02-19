@@ -38,10 +38,13 @@ typedef struct paperinfo{
 	string citeReference = "";
 	string citeMeAs = "";
 
+	set<string> stemTile;
+	set<string> stemKeyword;
 	vector<string> keywords;
 	unordered_map<string, int> wordVec;		//未去冗余、哈希词频
 
 	vector<stemInfo> stemVec;
+	vector<double> dataMat;
 
 	set<string> reference;
 	vector<int> citeRidx;
@@ -67,6 +70,14 @@ void readCSV();
 返回：	无
 */
 void calCite();
+
+/*
+函数名：	getMat
+功能：	获得权重矩阵
+输入：	无
+返回：	无
+*/
+void getMat();
 
 /*
 函数名：	outputResult
