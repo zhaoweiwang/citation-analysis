@@ -1,5 +1,5 @@
 #include "Head.h"
-#include <boost/tokenizer.hpp>
+#include "boost/tokenizer.hpp"
 
 extern vector<paperInfo> paperVec;
 
@@ -218,7 +218,7 @@ void stemmingFunc(){
 
 	for (int i = 0; i < paperVec.size(); ++i){
 		for (int j = 0; j < paperVec[i].stemVec.size(); ++j){
-			paperVec[i].stemVec[j].idf = 1.0 / log(((double)paperVec.size() / (double)(stemCount[paperVec[i].stemVec[j].term])));
+			paperVec[i].stemVec[j].idf = 1/(log(((double)paperVec.size() / (double)(stemCount[paperVec[i].stemVec[j].term]))));
 			paperVec[i].stemVec[j].tf_idf = paperVec[i].stemVec[j].tf * paperVec[i].stemVec[j].idf;
 
 			double temp = paperVec[i].stemVec[j].tf_idf;
@@ -251,7 +251,6 @@ void stemmingFunc(){
 		//}
 		//getchar();
 	}
-
 	tfidf2vecMN();
 
 }

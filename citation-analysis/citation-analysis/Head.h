@@ -52,6 +52,8 @@ typedef struct paperinfo{
 	int scan = 0;
 	bool citeFlag = false;
 
+	//bool trueCiteFlag = false;
+
 }paperInfo;
 
 
