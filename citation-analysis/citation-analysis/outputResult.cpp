@@ -2,6 +2,8 @@
 #include <iomanip>
 extern vector<paperInfo> paperVec;
 
+extern string inputFile;
+
 double calSimi(vector<double> &v1, vector<double> &v2){
 	double d1 = 0.0, d2 = 0.0, d3 = 0.0;
 	unsigned int len = v1.size();
@@ -24,7 +26,9 @@ double calVector(vector<double> &a){
 }
 
 void outputResult(){
-	ofstream out("result_unweighted.txt");
+	string resultFile = inputFile.substr(0, inputFile.find_last_of('.')) + "-result.txt";
+	ofstream out(resultFile);
+
 	int countScan = 0;
 	int countEdge = 0;
 	for (auto i = 0; i < paperVec.size(); ++i){

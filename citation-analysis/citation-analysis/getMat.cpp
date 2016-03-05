@@ -63,6 +63,10 @@ void tfidf2vecMN(){
 }
 
 void stemmingFunc(){
+
+	ofstream outTok("token-paper.txt");
+	ofstream outStem("stem-paper.txt");
+
 	for (int i = 0; i < paperVec.size(); ++i){
 		//cout << paperVec[i].abstra << endl << endl;
 		//cout << "提取词条." << endl << endl;
@@ -70,30 +74,24 @@ void stemmingFunc(){
 
 		boost::tokenizer<> tokTitle(paperVec[i].title);
 		boost::tokenizer<> tokKeyword(paperVec[i].originalKeywords);
+
+		//2016-3-3
  
 		double countWord = 0.0;
-
-		for (boost::tokenizer<>::iterator beg = tok.begin(); beg != tok.end(); ++beg){
-			countWord++;
-
-			string strTemp = str2Lower(*beg);
-			wstring w(strTemp.size(), ' ');
-			copy(strTemp.begin(), strTemp.end(), w.begin());
-			stemming::english_stem<> english_stemmer;
-			english_stemmer(w);
-			string stem(strTemp.size(), ' ');
-			copy(w.begin(), w.end(), stem.begin());
-			stem = stem.substr(0, stem.find(' '));
-			if (!(std::binary_search(stopWords.begin(), stopWords.end(), stem))){
-				paperVec[i].wordVec[stem]++;
-				stemListSet.insert(stem);
-			}
-		}
+		outTok << "Title: " << paperVec[i].title << endl;
+		outStem << "Title: " << paperVec[i].title << endl;
+		outTok << "token:";
+		outStem << "stem:";
 
 		for (boost::tokenizer<>::iterator beg = tokTitle.begin(); beg != tokTitle.end(); ++beg){
 			countWord++;
-			
+
 			string strTemp = str2Lower(*beg);
+
+			if (!(std::binary_search(stopWords.begin(), stopWords.end(), strTemp))){
+				outTok << " " << strTemp;
+			}
+
 			wstring w(strTemp.size(), ' ');
 			copy(strTemp.begin(), strTemp.end(), w.begin());
 			stemming::english_stem<> english_stemmer;
@@ -106,14 +104,27 @@ void stemmingFunc(){
 				stemListSet.insert(stem);
 
 				paperVec[i].stemTile.insert(stem);
+
+
+				outStem << " " << stem;
 			}
 		}
 
+
+		outTok << endl << "Keywords: " << paperVec[i].originalKeywords << endl;
+		outStem << endl << "Keywords: " << paperVec[i].originalKeywords << endl;
+		outTok << "token:";
+		outStem << "stem:";
 
 		for (boost::tokenizer<>::iterator beg = tokKeyword.begin(); beg != tokKeyword.end(); ++beg){
 			countWord++;
 
 			string strTemp = str2Lower(*beg);
+
+			if (!(std::binary_search(stopWords.begin(), stopWords.end(), strTemp))){
+				outTok << " " << strTemp;
+			}
+
 			wstring w(strTemp.size(), ' ');
 			copy(strTemp.begin(), strTemp.end(), w.begin());
 			stemming::english_stem<> english_stemmer;
@@ -126,8 +137,46 @@ void stemmingFunc(){
 				stemListSet.insert(stem);
 
 				paperVec[i].stemKeyword.insert(stem);
+
+				outStem << " " << stem;
 			}
 		}
+
+
+
+		outTok << endl << "Abstract: " << paperVec[i].abstra << endl;
+		outStem << endl << "Abstract: " << paperVec[i].abstra << endl;
+		outTok << "token:";
+		outStem << "stem:";
+
+		for (boost::tokenizer<>::iterator beg = tok.begin(); beg != tok.end(); ++beg){
+			countWord++;
+
+			string strTemp = str2Lower(*beg);
+
+			if (!(std::binary_search(stopWords.begin(), stopWords.end(), strTemp))){
+				outTok << " " << strTemp;
+			}
+
+			wstring w(strTemp.size(), ' ');
+			copy(strTemp.begin(), strTemp.end(), w.begin());
+			stemming::english_stem<> english_stemmer;
+			english_stemmer(w);
+			string stem(strTemp.size(), ' ');
+			copy(w.begin(), w.end(), stem.begin());
+			stem = stem.substr(0, stem.find(' '));
+			if (!(std::binary_search(stopWords.begin(), stopWords.end(), stem))){
+				paperVec[i].wordVec[stem]++;
+				stemListSet.insert(stem);
+
+				outStem << " " << stem;
+			}
+		}
+
+
+
+		outStem << endl;
+		outTok << endl;
 
 
 		//cout << "词条小写化、去冗余处理." << endl << endl;
@@ -156,6 +205,9 @@ void stemmingFunc(){
 		//	cout << iter->first << ":" << iter->second << endl;
 		//getchar();
 	}
+	outTok.close();
+	outStem.close();
+
 
 	copy(stemListSet.begin(), stemListSet.end(), back_inserter(stemList));
 	//cout << stemList.size() << endl;
@@ -170,16 +222,30 @@ void stemmingFunc(){
 			paperVec[i].stemVec[j].tf_idf = paperVec[i].stemVec[j].tf * paperVec[i].stemVec[j].idf;
 
 			double temp = paperVec[i].stemVec[j].tf_idf;
+
+			paperVec[i].stemVec[j].tf_idf = 0.2 * temp;
 			set<string>::iterator iter;
 			if ((iter = paperVec[i].stemTile.find(paperVec[i].stemVec[j].term)) != paperVec[i].stemTile.end())
-				paperVec[i].stemVec[j].tf_idf = 1.5 * temp;
+				paperVec[i].stemVec[j].tf_idf = 0.3 * temp;
 
 			if ((iter = paperVec[i].stemKeyword.find(paperVec[i].stemVec[j].term)) != paperVec[i].stemKeyword.end())
-				paperVec[i].stemVec[j].tf_idf = 2.5 * temp;
+				paperVec[i].stemVec[j].tf_idf = 0.5 * temp;
 		}
 
 		sort(paperVec[i].stemVec.begin(), paperVec[i].stemVec.end(), compTFIDF);
 
+		int Top = 25;
+		int count = 0;
+		vector<stemInfo>::iterator iter = paperVec[i].stemVec.begin();
+		while (iter != paperVec[i].stemVec.end()){
+			count++;
+			if (count <= Top)
+				iter++;
+			else
+				iter = paperVec[i].stemVec.erase(iter);
+		}
+
+		//cout << paperVec[i].stemVec.size() << endl;
 		//for (int j = 0; j < paperVec[i].stemVec.size(); ++j){
 		//	cout << paperVec[i].stemVec[j].term << ":" << paperVec[i].stemVec[j].tf_idf << endl;
 		//}
