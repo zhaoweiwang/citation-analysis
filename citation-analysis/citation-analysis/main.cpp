@@ -9,6 +9,8 @@
 
 int main(){
 
+	//前期操作: 语料库构建
+	loadCorpus();
 	//Step1: 读取CSV文件，把每一条引文记录load到内存
 	readCSV();
 	//Step2: 计算引用与被引情况

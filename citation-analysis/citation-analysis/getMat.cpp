@@ -2,12 +2,15 @@
 #include "boost/tokenizer.hpp"
 
 extern vector<paperInfo> paperVec;
+extern int countDoc;
+extern unordered_map<string, int> stemIdfCount;
+//extern vector<set<string>> DocVec;
 
 set<string> stemListSet;
 vector<string> stemList;
 vector<string> stopWords;				//停用词集合
 
-unordered_map<string, int> stemCount;	//stem的文档数
+//unordered_map<string, int> stemCount;	//stem的文档数
 
 void loadStopWords()
 {
@@ -67,6 +70,8 @@ void stemmingFunc(){
 	ofstream outTok("token-paper.txt");
 	ofstream outStem("stem-paper.txt");
 
+
+	//ofstream outCorpus("Corpus.txt");
 	for (int i = 0; i < paperVec.size(); ++i){
 		//cout << paperVec[i].abstra << endl << endl;
 		//cout << "提取词条." << endl << endl;
@@ -100,13 +105,15 @@ void stemmingFunc(){
 			copy(w.begin(), w.end(), stem.begin());
 			stem = stem.substr(0, stem.find(' '));
 			if (!(std::binary_search(stopWords.begin(), stopWords.end(), stem))){
-				paperVec[i].wordVec[stem]++;
-				stemListSet.insert(stem);
+				if (stem.length() > 5){
+					paperVec[i].wordVec[stem]++;
+					stemListSet.insert(stem);
 
-				paperVec[i].stemTile.insert(stem);
+					paperVec[i].stemTile.insert(stem);
 
 
-				outStem << " " << stem;
+					outStem << " " << stem;
+				}
 			}
 		}
 
@@ -133,12 +140,14 @@ void stemmingFunc(){
 			copy(w.begin(), w.end(), stem.begin());
 			stem = stem.substr(0, stem.find(' '));
 			if (!(std::binary_search(stopWords.begin(), stopWords.end(), stem))){
-				paperVec[i].wordVec[stem]++;
-				stemListSet.insert(stem);
+				if (stem.length() > 5){
+					paperVec[i].wordVec[stem]++;
+					stemListSet.insert(stem);
 
-				paperVec[i].stemKeyword.insert(stem);
+					paperVec[i].stemKeyword.insert(stem);
 
-				outStem << " " << stem;
+					outStem << " " << stem;
+				}
 			}
 		}
 
@@ -166,10 +175,12 @@ void stemmingFunc(){
 			copy(w.begin(), w.end(), stem.begin());
 			stem = stem.substr(0, stem.find(' '));
 			if (!(std::binary_search(stopWords.begin(), stopWords.end(), stem))){
-				paperVec[i].wordVec[stem]++;
-				stemListSet.insert(stem);
+				if (stem.length() > 5){
+					paperVec[i].wordVec[stem]++;
+					stemListSet.insert(stem);
 
-				outStem << " " << stem;
+					outStem << " " << stem;
+				}
 			}
 		}
 
@@ -186,13 +197,34 @@ void stemmingFunc(){
 		multimap<double, string> sortMap;
 		for (unordered_map<string, int>::iterator it = paperVec[i].wordVec.begin(); it != paperVec[i].wordVec.end(); ++it){
 			stemInfo stemTemp;
-			double tempTf = ((double)(it->second)) / countWord;
+			//double tempTf = ((double)(it->second)) / countWord;
+			double tempTf = log10((double)(it->second)) + 1.0;
+			//cout << it->first <<" " << it->second <<" "<< tempTf << endl;
+			//getchar();
 			stemTemp.tf = tempTf;
 			stemTemp.term = it->first;
 			sortMap.insert(make_pair(tempTf, it->first));
-			stemCount[it->first]++;
+			//stemCount[it->first]++;
 			paperVec[i].stemVec.push_back(stemTemp);
 		}
+
+		
+		//printf("计算每个特征的IDF中: %.2lf%%\r", i * 100.0 / paperVec.size());
+		//for (unordered_map<string, int>::iterator it = paperVec[i].wordVec.begin(); it != paperVec[i].wordVec.end(); ++it){
+		//	
+		//	int count_doc = 0;
+		//	for (auto j = 0; j < DocVec.size(); ++j){
+		//		
+		//		if (DocVec[j].find(it->first) != DocVec[j].end())
+		//			count_doc++;
+		//	}
+		//	if (count_doc == 0)
+		//		count_doc = 1;
+		//	stemCount[it->first] = count_doc;
+		//	outCorpus << it->first << " " << stemCount[it->first] << endl;
+		//	//cout << it->first << ": " << count_doc << endl;
+		//	//getchar();
+		//}
 
 
 		//for (multimap<double, string>::iterator it = sortMap.begin(); it != sortMap.end(); ++it)
@@ -207,18 +239,24 @@ void stemmingFunc(){
 	}
 	outTok.close();
 	outStem.close();
-
+	//outCorpus.close();
+	cout << endl;
 
 	copy(stemListSet.begin(), stemListSet.end(), back_inserter(stemList));
 	//cout << stemList.size() << endl;
-	cout << "总共：" << stemCount.size() << "维." << endl;
+	//cout << "总共：" << stemCount.size() << "维." << endl;
 
 	//cout << "总共：" << stemList.size() << "维." << endl;
 	//getchar();
 
 	for (int i = 0; i < paperVec.size(); ++i){
 		for (int j = 0; j < paperVec[i].stemVec.size(); ++j){
-			paperVec[i].stemVec[j].idf = 1/(log(((double)paperVec.size() / (double)(stemCount[paperVec[i].stemVec[j].term]))));
+			if (stemIdfCount[paperVec[i].stemVec[j].term] != 0)
+				paperVec[i].stemVec[j].idf = (log10(((double)countDoc / (double)(stemIdfCount[paperVec[i].stemVec[j].term]))));
+			else
+				paperVec[i].stemVec[j].idf = (log10(((double)countDoc / (double)(1+stemIdfCount[paperVec[i].stemVec[j].term]))));
+			//cout << paperVec[i].stemVec[j].term << " " << stemIdfCount[paperVec[i].stemVec[j].term] << " " << paperVec[i].stemVec[j].idf << endl;
+			//getchar();
 			paperVec[i].stemVec[j].tf_idf = paperVec[i].stemVec[j].tf * paperVec[i].stemVec[j].idf;
 
 			double temp = paperVec[i].stemVec[j].tf_idf;
@@ -230,11 +268,12 @@ void stemmingFunc(){
 
 			if ((iter = paperVec[i].stemKeyword.find(paperVec[i].stemVec[j].term)) != paperVec[i].stemKeyword.end())
 				paperVec[i].stemVec[j].tf_idf = 0.5 * temp;
+
 		}
 
 		sort(paperVec[i].stemVec.begin(), paperVec[i].stemVec.end(), compTFIDF);
 
-		int Top = 25;
+		int Top = 50;
 		int count = 0;
 		vector<stemInfo>::iterator iter = paperVec[i].stemVec.begin();
 		while (iter != paperVec[i].stemVec.end()){

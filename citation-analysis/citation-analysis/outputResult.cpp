@@ -87,7 +87,7 @@ void outputResult(){
 							if (paperVec[paperVec[i].citeRidx[j]].title == paperVec[paperVec[k].citeRidx[t]].title){
 								string temp = paperVec[i].title + paperVec[k].title;
 								if (cheackTable[temp] == 2) break;
-								if (calSimi(paperVec[i].dataMat, paperVec[k].dataMat) - 0.5 > 0){
+								if (calSimi(paperVec[i].dataMat, paperVec[k].dataMat) - 0.3 > 0){
 									out << paperVec[i].scan << " " << paperVec[k].scan << " " << setiosflags(ios::fixed) << setprecision(7) << calSimi(paperVec[i].dataMat, paperVec[k].dataMat) << endl;
 								}
 								break;

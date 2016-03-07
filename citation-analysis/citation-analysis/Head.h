@@ -97,3 +97,12 @@ void outputResult();
 返回：	无
 */
 void doc2Word();
+
+
+/*
+函数名：	loadCorpus
+功能：	获取语料库
+输入：	无
+返回：	无
+*/
+void loadCorpus();
