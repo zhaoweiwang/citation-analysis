@@ -2,8 +2,6 @@
 #include <iomanip>
 extern vector<paperInfo> paperVec;
 
-extern string inputFile;
-
 unordered_map<string, int> cheackTable;
 
 double calSimi(vector<double> &v1, vector<double> &v2){
@@ -28,9 +26,9 @@ double calVector(vector<double> &a){
 }
 
 void outputResult(){
-	string resultFile = inputFile.substr(0, inputFile.find_last_of('.')) + "-result.txt";
-	ofstream out(resultFile.c_str());
+	cout << endl << endl << "第四步：计算引文之间的相似度（余弦相似度）并输出到结果文件..." << endl<< endl;
 
+	ofstream out("E:\\肖雪个人文档\\硕士毕业论文\\source\\citation-analysis\\citation-analysis\\数据结果\\result_weighted.txt");
 	int countScan = 0;
 	int countEdge = 0;
 	for (auto i = 0; i < paperVec.size(); ++i){
@@ -57,8 +55,6 @@ void outputResult(){
 				string temp2 = paperVec[paperVec[i].citeRidx[j]].title + paperVec[i].title;
 				cheackTable[temp1] = 2;
 				cheackTable[temp2] = 2;
-				//paperVec[i].trueCiteFlag = true;
-				//paperVec[paperVec[i].citeRidx[j]].trueCiteFlag = true;
 
 				if (calVector(paperVec[paperVec[i].citeRidx[j]].dataMat) == 0.0){
 					cout << calVector(paperVec[i].dataMat) << endl;
@@ -73,12 +69,11 @@ void outputResult(){
 		}
 	}
 
-
 	out << "===========耦合情况===========" << endl;
 	//耦合情况输出
 	for (auto i = 0; i < paperVec.size(); ++i){
 		for (auto j = 0; j < paperVec[i].citeRidx.size(); ++j){
-			for (auto k = i+1; k < paperVec.size(); ++k){
+			for (auto k = i + 1; k < paperVec.size(); ++k){
 				if (k == i)
 					continue;
 				else{
@@ -88,7 +83,7 @@ void outputResult(){
 								string temp = paperVec[i].title + paperVec[k].title;
 								if (cheackTable[temp] == 2) break;
 								if (calSimi(paperVec[i].dataMat, paperVec[k].dataMat) - 0.3 > 0){
-									out << paperVec[i].scan << " " << paperVec[k].scan << " " << setiosflags(ios::fixed) << setprecision(7) << calSimi(paperVec[i].dataMat, paperVec[k].dataMat) << endl;
+									out << paperVec[i].scan << " " << paperVec[k].scan << " " << setiosflags(ios::fixed) << setprecision(14) << calSimi(paperVec[i].dataMat, paperVec[k].dataMat) << endl;
 								}
 								break;
 							}
@@ -98,6 +93,7 @@ void outputResult(){
 			}
 		}
 	}
+
 
 	out.close();
 }
