@@ -53,6 +53,7 @@ typedef struct paperinfo{
 	bool citeFlag = false;
 
 	//bool trueCiteFlag = false;
+	int classNum = 9999;
 
 }paperInfo;
 
@@ -106,3 +107,20 @@ void doc2Word();
 返回：	无
 */
 void loadCorpus();
+
+
+/*
+函数名：	testCal
+功能：	分词性能测试
+输入：	无
+返回：	无
+*/
+void testCal();
+
+/*
+函数名：	calSSE()
+功能：	计算分类评价指标
+输入：	无
+返回：	无
+*/
+void calSSE();
