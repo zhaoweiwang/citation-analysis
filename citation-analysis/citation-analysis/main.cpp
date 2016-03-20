@@ -23,6 +23,7 @@ int main(){
 	//Step4: 分词、去无效词
 	//doc2Word();
 	//Step5: 计算分类效果
+	
 	calSSE();
 
 	return 0;

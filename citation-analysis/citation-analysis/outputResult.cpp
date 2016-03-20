@@ -28,7 +28,7 @@ double calVector(vector<double> &a){
 void outputResult(){
 	cout << endl << endl << "第四步：计算引文之间的相似度（余弦相似度）并输出到结果文件..." << endl<< endl;
 
-	ofstream out("E:\\肖雪个人文档\\硕士毕业论文\\source\\citation-analysis\\citation-analysis\\数据结果\\result_weighted.txt");
+	ofstream out("D:\\Source\\GitHub\\citation-analysis\\citation-analysis\\citation-analysis\\result_weighted.txt");
 	int countScan = 0;
 	int countEdge = 0;
 	for (auto i = 0; i < paperVec.size(); ++i){

@@ -8,7 +8,7 @@ unordered_map<string, int> stemIdfCount;
 
 //vector<set<string>> DocVec;
 
-string path = "E:\\肖雪个人文档\\硕士毕业论文\\source\\citation-analysis\\citation-analysis\\data";
+string path = "D:\\Source\\GitHub\\citation-analysis\\citation-analysis\\citation-analysis\\data";
 vector<string> files;
 
 void getFiles(){
@@ -23,6 +23,8 @@ void getFiles(){
 				if (strcmp(fileinfo.name, ".") != 0 && strcmp(fileinfo.name, "..") != 0)
 					getFiles();
 			}else{
+				//cout << p << endl;
+				//getchar();
 				files.push_back(p.assign(path).append("/").append(fileinfo.name));
 			}
 		} while (_findnext(hFile, &fileinfo) == 0);
